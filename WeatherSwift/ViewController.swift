@@ -19,6 +19,9 @@ class ViewController: UIViewController { // 3aeb0927332507b5d1c47e8cccb8c7b9
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let mapViewController = MapViewController()
+        print(mapViewController)
+        
         let stringURL = URL(string: url)
         
 //        let weatherObject = NSData(contentsOf: stringURL!)
@@ -48,7 +51,7 @@ class ViewController: UIViewController { // 3aeb0927332507b5d1c47e8cccb8c7b9
                     self.iconImageView.image = weather.icon
                 }
                 
-                // тест для гитхаба
+                // test for new branch on github
                 
                 
             } catch {
