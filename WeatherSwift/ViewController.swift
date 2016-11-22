@@ -48,7 +48,7 @@ class ViewController: UIViewController { // 3aeb0927332507b5d1c47e8cccb8c7b9
                     self.iconImageView.image = weather.icon
                 }
                 
-                
+                // тест для гитхаба
                 
                 
             } catch {
