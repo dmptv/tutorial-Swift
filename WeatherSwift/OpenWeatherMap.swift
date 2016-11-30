@@ -19,7 +19,8 @@ protocol OpenWeatherMapDelegate {
 
  // модель погоды
 class OpenWeatherMap {
-    let weatherUrl = "http://api.openweathermap.org/data/2.5/weather"
+    let weatherUrl = "http://api.openweathermap.org/data/2.5/forecast" // weather
+    
     var delagete: OpenWeatherMapDelegate!
     
     
@@ -30,7 +31,8 @@ class OpenWeatherMap {
     }
     
     func weatherFor(geo: CLLocationCoordinate2D) {
-        let params = ["lat": geo.latitude, "lon": geo.longitude, "APPID" : "3aeb0927332507b5d1c47e8cccb8c7b9"] as [String : Any]
+        let params = ["lat": geo.latitude, "lon": geo.longitude,
+                      "APPID" : "3aeb0927332507b5d1c47e8cccb8c7b9"] as [String : Any]
         setRequest(params: params as [String : AnyObject]?)
     }
     
@@ -39,6 +41,7 @@ class OpenWeatherMap {
             if (res.result.error != nil) {
                 self.delagete.failure()
             } else {
+                // получим JSON
                 let weatherJson = JSON(res.result.value as Any)
                 
                 DispatchQueue.main.async {
@@ -60,7 +63,7 @@ class OpenWeatherMap {
     }
     
     
-    func updateWeatherIcon(condition: Int, nightTime: Bool) -> UIImage {
+    func updateWeatherIcon(condition: Int, nightTime: Bool, index: Int) -> UIImage {
         var imageName = String()
         switch (condition, nightTime) {
             // Thunderstorm
@@ -118,7 +121,12 @@ class OpenWeatherMap {
     }
     
     
-    func isTimeNight(weaatherJson: JSON) -> Bool {
+    func isTimeNight(icon: String) -> Bool {
+         // узнали ночь или день
+        return icon.range(of: "n") != nil
+    }
+    
+    /*func isTimeNight(weaatherJson: JSON) -> Bool {
         var nightTime = false
         let nowTime = NSDate().timeIntervalSince1970
         let sunrise = weaatherJson["sys"]["sunrise"].doubleValue
@@ -128,7 +136,7 @@ class OpenWeatherMap {
             nightTime = true
         }
         return nightTime
-    }
+    } */
 }
 
 

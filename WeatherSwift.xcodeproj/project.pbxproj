@@ -26,6 +26,7 @@
 		AB2BB7B71DE6E1B40078F17A /* 50d.png in Resources */ = {isa = PBXBuildFile; fileRef = AB2BB7A41DE6E1B40078F17A /* 50d.png */; };
 		AB2BB7B81DE6E1B40078F17A /* 50n.png in Resources */ = {isa = PBXBuildFile; fileRef = AB2BB7A51DE6E1B40078F17A /* 50n.png */; };
 		AB2BB7B91DE6E1B40078F17A /* none.png in Resources */ = {isa = PBXBuildFile; fileRef = AB2BB7A61DE6E1B40078F17A /* none.png */; };
+		AB50A9921DEEF2CD001A3755 /* ForecastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB50A9911DEEF2CD001A3755 /* ForecastViewController.swift */; };
 		ABF9CF4F1DE2E639001204FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF9CF4E1DE2E639001204FF /* AppDelegate.swift */; };
 		ABF9CF511DE2E639001204FF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF9CF501DE2E639001204FF /* ViewController.swift */; };
 		ABF9CF541DE2E639001204FF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABF9CF521DE2E639001204FF /* Main.storyboard */; };
@@ -69,6 +70,7 @@
 		AB2BB7A41DE6E1B40078F17A /* 50d.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 50d.png; sourceTree = "<group>"; };
 		AB2BB7A51DE6E1B40078F17A /* 50n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 50n.png; sourceTree = "<group>"; };
 		AB2BB7A61DE6E1B40078F17A /* none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = none.png; sourceTree = "<group>"; };
+		AB50A9911DEEF2CD001A3755 /* ForecastViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForecastViewController.swift; sourceTree = "<group>"; };
 		ABF9CF4B1DE2E639001204FF /* WeatherSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABF9CF4E1DE2E639001204FF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ABF9CF501DE2E639001204FF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -145,6 +147,34 @@
 			path = IconWeather;
 			sourceTree = "<group>";
 		};
+		AB50A98B1DEEB72D001A3755 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				ABF9CF601DE3100C001204FF /* OpenWeatherMap.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		AB50A98C1DEEB73C001A3755 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				ABF9CF501DE2E639001204FF /* ViewController.swift */,
+				AB50A9911DEEF2CD001A3755 /* ForecastViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		AB50A98D1DEEB778001A3755 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ABFA89211DE59B8F00327F81 /* MBProgressHUD.h */,
+				ABFA89221DE59B8F00327F81 /* MBProgressHUD.m */,
+				ABFA891D1DE59B5A00327F81 /* SwiftyJSON.h */,
+				ABFA891E1DE59B5A00327F81 /* SwiftyJSON.swift */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		ABF9CF421DE2E639001204FF = {
 			isa = PBXGroup;
 			children = (
@@ -166,16 +196,13 @@
 		ABF9CF4D1DE2E639001204FF /* WeatherSwift */ = {
 			isa = PBXGroup;
 			children = (
-				ABF9CF601DE3100C001204FF /* OpenWeatherMap.swift */,
-				ABF9CF501DE2E639001204FF /* ViewController.swift */,
+				AB50A98B1DEEB72D001A3755 /* Model */,
+				AB50A98C1DEEB73C001A3755 /* Controllers */,
 				ABF9CF521DE2E639001204FF /* Main.storyboard */,
 				ABF9CF4E1DE2E639001204FF /* AppDelegate.swift */,
 				ABF9CF551DE2E639001204FF /* Assets.xcassets */,
 				ABFA89201DE59B8E00327F81 /* WeatherSwift-Bridging-Header.h */,
-				ABFA89211DE59B8F00327F81 /* MBProgressHUD.h */,
-				ABFA89221DE59B8F00327F81 /* MBProgressHUD.m */,
-				ABFA891D1DE59B5A00327F81 /* SwiftyJSON.h */,
-				ABFA891E1DE59B5A00327F81 /* SwiftyJSON.swift */,
+				AB50A98D1DEEB778001A3755 /* Frameworks */,
 				ABFA877B1DE440BB00327F81 /* WEATHER */,
 				ABF9CF571DE2E639001204FF /* LaunchScreen.storyboard */,
 				ABF9CF5A1DE2E639001204FF /* Info.plist */,
@@ -369,6 +396,7 @@
 				ABF9CF511DE2E639001204FF /* ViewController.swift in Sources */,
 				ABF9CF4F1DE2E639001204FF /* AppDelegate.swift in Sources */,
 				ABFA891F1DE59B5A00327F81 /* SwiftyJSON.swift in Sources */,
+				AB50A9921DEEF2CD001A3755 /* ForecastViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,6 +440,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -462,6 +491,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -491,6 +521,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 54D84040F061054B0D15546F /* Pods-WeatherSwift.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = TV52855HY8;
@@ -509,6 +540,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D9367CF20F8DADC03C4F4BB7 /* Pods-WeatherSwift.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = TV52855HY8;

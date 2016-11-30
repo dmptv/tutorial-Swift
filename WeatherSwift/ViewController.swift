@@ -10,7 +10,9 @@ import UIKit
 import CoreLocation
 
 
-// "http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=3aeb0927332507b5d1c47e8cccb8c7b9"
+// "http://api.openweathermap.org/data/2.5/weather?
+// q=London,uk&
+// APPID=3aeb0927332507b5d1c47e8cccb8c7b9"
 
 class ViewController: UIViewController, OpenWeatherMapDelegate, CLLocationManagerDelegate {
     
@@ -30,6 +32,7 @@ class ViewController: UIViewController, OpenWeatherMapDelegate, CLLocationManage
         displayCity()
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,9 +41,9 @@ class ViewController: UIViewController, OpenWeatherMapDelegate, CLLocationManage
         let bg = UIImage(named: imageName)
         self.view.backgroundColor = UIColor(patternImage: bg!)
 
-        // Set setup
         self.openWeather.delagete = self
         
+        // настроим locationManager
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
@@ -59,7 +62,8 @@ class ViewController: UIViewController, OpenWeatherMapDelegate, CLLocationManage
         
         alert.addAction(cancel)
         
-        let ok = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (action)->Void in
+        let ok = UIAlertAction(title: "OK",
+                               style: UIAlertActionStyle.default) { (action)->Void in
             
             if let textField = (alert.textFields?.first) as UITextField! {
                 self.activityIndicator()
@@ -90,46 +94,99 @@ class ViewController: UIViewController, OpenWeatherMapDelegate, CLLocationManage
     //Mark: OpenWeatherMapDelegate
     
          // required метод для делегата
+         // сюда пришел JSON полученный by alamofire
     func updateWeatherInfo(weatherJson: JSON) {
+        print(weatherJson)
+        
         hud.hide(animated: true)
         
-        if let tempResult = weatherJson["main"]["temp"].double {
+        // распихаем JSON
+        if let tempResult = weatherJson["list"][0]["main"]["temp"].double {
             
             // Get country
-            let country = weatherJson["sys"]["country"].stringValue
+            let country = weatherJson["city"]["country"].stringValue
             
             // Get city name
-            let cityName = weatherJson["name"].stringValue
-            self.cityNameLabel.text = "\(cityName), \(country)"
+            let cityName = weatherJson["city"]["name"].stringValue
+            self.cityNameLabel.text = "\(cityName), \(country) test test test"
             
             // Get time
-            let time = weatherJson["dt"].intValue
-            let timeToStr = openWeather.timeFromUnix(unixTime: time)
+            let now = Int(NSDate().timeIntervalSince1970) // current time
+            let timeToStr = openWeather.timeFromUnix(unixTime: now)
             self.timeLabel.text = "At \(timeToStr) it is"
             
             // Get convert temperature
-            let temperature = openWeather.convertTemperature(contry: country, temperature: tempResult)
-            self.tempLabel.text = "\(temperature)"
+            let temperature = openWeather.convertTemperature(contry: country,
+                                                             temperature: tempResult)
+            self.tempLabel.text = "\(temperature)º"
             
             // get icon
-            let weather = weatherJson["weather"][0]
+            let weather = weatherJson["list"][0]["weather"][0]
             let condition = weather["id"].intValue
-            let nightTime = openWeather.isTimeNight(weaatherJson: weatherJson)
-            let icon = openWeather.updateWeatherIcon(condition: condition, nightTime: nightTime)
+            let iconStr = weather["icon"].stringValue
+            let nightTime = openWeather.isTimeNight(icon: iconStr)
+            let icon = openWeather.updateWeatherIcon(condition: condition,
+                                                     nightTime: nightTime,
+                                                         index: 0)
+            self.iconImageView.image = icon
             
             // Get description
             let descr = weather["description"].stringValue
             self.descriptionLabel.text = descr
             
             // Get speed wind
-            let speed = weatherJson["wind"]["speed"].doubleValue
+            let speed = weatherJson["list"][0]["wind"]["speed"].doubleValue
             self.speedWindLabel.text = "\(speed)"
             
             // Get humididty
-            let humidity = weatherJson["main"]["humidity"].intValue
+            let humidity = weatherJson["list"][0]["main"]["humidity"].intValue
             self.humodotyLabel.text = "\(humidity)"
             
-            self.iconImageView.image = icon
+            // для следующих дней
+            for index in 1...4 {
+                if let tempResult = weatherJson["list"][index]["main"]["temp"].double {
+                    // Get convert temperature
+                    let temperature =
+                        openWeather.convertTemperature(contry: country,
+                                                  temperature: tempResult)
+                    
+                    if (index == 1) {
+                        print(temperature)
+                    } else if (index == 2) {
+                        print(temperature)
+                    } else if (index == 3) {
+                        print(temperature)
+                    } else if (index == 4) {
+                        print(temperature)
+                    }
+                    
+                    // Get forecast time
+                    let forecasttime = weatherJson["list"][index]["dt"].intValue
+                    let timeToStr = openWeather.timeFromUnix(unixTime: forecasttime)
+                    
+                    if (index == 1) {
+                        print(timeToStr)
+                    } else if (index == 2) {
+                        print(timeToStr)
+                    } else if (index == 3) {
+                        print(timeToStr)
+                    } else if (index == 4) {
+                        print(timeToStr)
+                    }
+                    
+                    let weather = weatherJson["list"][index]["weather"][0]
+                    let iconStr = weather["icon"].stringValue
+                    let nightTime = openWeather.isTimeNight(icon: iconStr) // узнали ночь или день
+                    let icon = openWeather.updateWeatherIcon(condition: condition,
+                                                             nightTime: nightTime,
+                                                                 index: index)
+                    self.iconImageView.image = icon
+
+                }
+                
+            }
+            
+            
         } else {
             print("Unable load weather info")
         }
@@ -138,38 +195,50 @@ class ViewController: UIViewController, OpenWeatherMapDelegate, CLLocationManage
     
     func failure() {
         // No connection
-        let networkController = UIAlertController(title: "Error",
-                                                  message: "No connection!",
-                                                  preferredStyle: UIAlertControllerStyle.alert)
-        let okButton = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
+        let networkController =
+            UIAlertController(title: "Error",
+                            message: "No connection!",
+                     preferredStyle: UIAlertControllerStyle.alert)
+        
+        let okButton = UIAlertAction(title: "OK",
+                                     style: UIAlertActionStyle.default,
+                                     handler: nil)
         
         networkController.addAction(okButton)
-        self.present(networkController, animated: true, completion: nil)
+        self.present(networkController,
+                     animated: true,
+                     completion: nil)
     }
     
     
     //MARK: - CLLocationManagerDelegate
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print(manager.location!)
-        
+    func locationManager(_ manager: CLLocationManager,
+                         didUpdateLocations
+        locations: [CLLocation]) {
+        // print(manager.location!)
+
         self.activityIndicator()
         
+        // возьмем наш локэйшн
         let currentLocation = locations.last as CLLocation!
         
         if (currentLocation!.horizontalAccuracy > 0) {
             // Stop update locations to save battery life
             locationManager.stopUpdatingLocation()
             
-            let coords = CLLocationCoordinate2DMake((currentLocation?.coordinate.latitude)!,
-                                                    (currentLocation?.coordinate.longitude)!)
+            // пердадим наши координаты 
+            let coords =
+            CLLocationCoordinate2DMake((currentLocation?.coordinate.latitude)!,
+                                       (currentLocation?.coordinate.longitude)!)
             self.openWeather.weatherFor(geo: coords)
-            print(coords)
+            //print(coords)
         }
     }
     
 
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+    func locationManager(_ manager: CLLocationManager,
+                         didFailWithError error: Error) {
         print(error)
         print("can't get your location")
     }
