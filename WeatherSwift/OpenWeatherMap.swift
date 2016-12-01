@@ -54,12 +54,16 @@ class OpenWeatherMap {
     
     // из секунд делаем строку
     func timeFromUnix(unixTime: Int) -> String {
+                
         let timeInsecond = TimeInterval(unixTime)
         let weatherDate = Date(timeIntervalSince1970: timeInsecond)
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm"
-        return dateFormatter.string(from: weatherDate)
+        
+        let str = dateFormatter.string(from: weatherDate)
+        
+        return str
     }
     
     
@@ -111,9 +115,12 @@ class OpenWeatherMap {
     
     
     func convertTemperature(contry: String, temperature: Double) -> Double {
+        
         if (contry == "US") {
             // convert to Farengate
-            return round(((temperature - 273.215) * 1.8) + 32)
+            let temp = round(((temperature - 273.215) * 1.8) + 32)
+            
+            return temp
         } else {
             // convert to Cel
             return round(temperature - 273.15)

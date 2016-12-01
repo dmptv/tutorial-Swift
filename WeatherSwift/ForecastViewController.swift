@@ -38,7 +38,7 @@ class ForecastViewController: UIViewController {
         time2Label.text = time2
         time3Label.text = time3
         time4Label.text = time4
-        
+
         temp1Label.text = temp1
         temp2Label.text = temp2
         temp3Label.text = temp3
@@ -48,3 +48,13 @@ class ForecastViewController: UIViewController {
 
 
 }
+
+
+
+
+
+
+
+
+
+

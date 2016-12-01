@@ -24,7 +24,20 @@ class ViewController: UIViewController, OpenWeatherMapDelegate, CLLocationManage
     @IBOutlet weak var humodotyLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     
-    var openWeather = OpenWeatherMap() // сделали экзэмпляр класса OpenWeatherMap (владелец протокола)
+    var time1Text: String!
+    var time2Text: String!
+    var time3Text: String!
+    var time4Text: String!
+    
+    var temp1Text: String!
+    var temp2Text: String!
+    var temp3Text: String!
+    var temp4Text: String!
+    
+    
+    var openWeather = OpenWeatherMap()
+    // сделали экзэмпляр класса OpenWeatherMap (владелец протокола)
+    
     var hud = MBProgressHUD()
     let locationManager: CLLocationManager = CLLocationManager()
     
@@ -67,18 +80,21 @@ class ViewController: UIViewController, OpenWeatherMapDelegate, CLLocationManage
             
             if let textField = (alert.textFields?.first) as UITextField! {
                 self.activityIndicator()
-                self.openWeather.weatherFor(city: textField.text!) // загрузка данных
+                self.openWeather.weatherFor(city: textField.text!)
+                // загрузка данных
             }
             
         }
         
         alert.addAction(ok)
         
-        alert.addTextField { (textFiled)->Void in // добавили тексфилд в алерт
+        alert.addTextField { (textFiled)->Void in
+            // добавили тексфилд в алерт
             textFiled.placeholder = "City Name"
         }
         
-        self.present(alert, animated: true, completion: nil) // презентуем алерт контролер
+        self.present(alert, animated: true, completion: nil)
+        // презентуем алерт контролер
     }
     
     
@@ -111,7 +127,8 @@ class ViewController: UIViewController, OpenWeatherMapDelegate, CLLocationManage
             self.cityNameLabel.text = "\(cityName), \(country) test test test"
             
             // Get time
-            let now = Int(NSDate().timeIntervalSince1970) // current time
+            let now = Int(NSDate().timeIntervalSince1970)
+            // current time
             let timeToStr = openWeather.timeFromUnix(unixTime: now)
             self.timeLabel.text = "At \(timeToStr) it is"
             
@@ -145,38 +162,44 @@ class ViewController: UIViewController, OpenWeatherMapDelegate, CLLocationManage
             // для следующих дней
             for index in 1...4 {
                 if let tempResult = weatherJson["list"][index]["main"]["temp"].double {
+                    
+                    
                     // Get convert temperature
                     let temperature =
                         openWeather.convertTemperature(contry: country,
                                                   temperature: tempResult)
                     
+                    let tempStr: String = "\(temperature)"
+                    
                     if (index == 1) {
-                        print(temperature)
+                        temp1Text = tempStr
                     } else if (index == 2) {
-                        print(temperature)
+                        temp2Text = tempStr
                     } else if (index == 3) {
-                        print(temperature)
+                        temp3Text = tempStr
                     } else if (index == 4) {
-                        print(temperature)
+                        temp4Text = tempStr
                     }
                     
                     // Get forecast time
                     let forecasttime = weatherJson["list"][index]["dt"].intValue
+                    
                     let timeToStr = openWeather.timeFromUnix(unixTime: forecasttime)
                     
                     if (index == 1) {
-                        print(timeToStr)
+                        time1Text = timeToStr
                     } else if (index == 2) {
-                        print(timeToStr)
+                        time2Text = timeToStr
                     } else if (index == 3) {
-                        print(timeToStr)
+                        time3Text = timeToStr
                     } else if (index == 4) {
-                        print(timeToStr)
+                        time4Text = timeToStr
                     }
                     
                     let weather = weatherJson["list"][index]["weather"][0]
                     let iconStr = weather["icon"].stringValue
-                    let nightTime = openWeather.isTimeNight(icon: iconStr) // узнали ночь или день
+                    let nightTime = openWeather.isTimeNight(icon: iconStr)
+                    // узнали ночь или день
                     let icon = openWeather.updateWeatherIcon(condition: condition,
                                                              nightTime: nightTime,
                                                                  index: index)
@@ -242,6 +265,27 @@ class ViewController: UIViewController, OpenWeatherMapDelegate, CLLocationManage
         print(error)
         print("can't get your location")
     }
+    
+    //MARK: - Prepare for seque
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "moreInfo" {
+            let forecastController = segue.destination as!
+            ForecastViewController
+            
+            forecastController.time1 = time1Text
+            forecastController.time2 = time2Text
+            forecastController.time3 = time3Text
+            forecastController.time4 = time4Text
+            
+            forecastController.temp1 = temp1Text
+            forecastController.temp2 = temp2Text
+            forecastController.temp3 = temp3Text
+            forecastController.temp4 = temp4Text
+            
+        }
+    }
+    
 
 }
 
